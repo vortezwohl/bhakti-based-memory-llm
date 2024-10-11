@@ -163,3 +163,4 @@ cython_debug/
 zen
 *.inv
 *.vec
+cache
