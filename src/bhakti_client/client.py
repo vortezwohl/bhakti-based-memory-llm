@@ -6,7 +6,7 @@ BHAKTI_PORT = 23860
 EOF = b'<eof>'
 TIMEOUT = 4.0
 BUFFER_SIZE = 256
-VERBOSE = True
+VERBOSE = False
 
 bhakti_client = BhaktiClient(
     server=BHAKTI_SERVER,  # optional, default to 127.0.0.1

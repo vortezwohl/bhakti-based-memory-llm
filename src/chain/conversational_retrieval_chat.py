@@ -45,7 +45,6 @@ async def shell_run():
     while True:
         _query = input('> ')
         answer: str = ''
-        print(': ', end='', flush=True)
         response = await memo_chat(
             query=_query,
             top_k=5,

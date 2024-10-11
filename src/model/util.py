@@ -2,6 +2,7 @@ import re
 import time
 
 from bhakti.database import Metric
+from bhakti.exception import BhaktiRemoteError
 from numpy import ndarray, asarray
 
 from src.model.embedding.m3e_small import m3e_small
@@ -23,12 +24,15 @@ async def recall_memories(
         bot_id: str = DEFAULT_BOT_ID
 ) -> list[tuple]:
     query_vector = text_encode(query)
-    return await bhakti_client.find_documents_by_vector_indexed(
-        query=f'user_id == "{user_id}" && bot_id == "{bot_id}"',
-        vector=query_vector,
-        metric=metric,
-        top_k=top_k
-    )
+    try:
+        return await bhakti_client.find_documents_by_vector_indexed(
+            query=f'user_id == "{user_id}" && bot_id == "{bot_id}"',
+            vector=query_vector,
+            metric=metric,
+            top_k=top_k
+        )
+    except BhaktiRemoteError:
+        return []
 
 
 async def recall_memories_templated(
@@ -61,12 +65,10 @@ async def memorize_conversation(
         bot_id: str = DEFAULT_BOT_ID,
         cached: bool = False
 ) -> bool:
+    answer = re.sub(pattern=r'\n+', repl='\n', string=answer)
     query_vector = text_encode(query)
-    answer_vector = text_encode(re.sub(
-        pattern=r'\n+',
-        repl='\n',
-        string=answer
-    ))
+    answer_vector = text_encode(answer)
+    vector = (query_vector + answer_vector) / 2.0
     mem_data = {
         'query': query,
         'answer': answer,
@@ -75,16 +77,11 @@ async def memorize_conversation(
         'timestamp': time.time()
     }
     inv_indices = list(mem_data.keys())
-    res1 = await bhakti_client.create(
-        vector=query_vector,
+    await bhakti_client.remove_by_vector(vector)
+    return await bhakti_client.create(
+        vector=vector,
         document=mem_data,
         indices=inv_indices,
         cached=cached
     )
-    res2 = await bhakti_client.create(
-        vector=answer_vector,
-        document=mem_data,
-        indices=inv_indices,
-        cached=cached
-    )
-    return res1 and res2
+

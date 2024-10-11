@@ -9,6 +9,7 @@ default_prompt = ChatPromptTemplate.from_template("""
     <Restraint>
         <1>给出尽可能简短的回答</1>
         <2>给出严谨的回答，当你无法确定问题的答案，请承认你的无知，不要给出毫无根据的答案</2>
+        <3>你的回复文本末尾不应有换行符</3>
     </Restraint>
 </System Prompt>
 <Memory>
