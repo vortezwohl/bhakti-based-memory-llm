@@ -1,1 +1,1 @@
-# BhaktiRAG-Demo
+# bhakti-based-memory-llm
