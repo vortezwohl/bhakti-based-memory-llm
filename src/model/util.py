@@ -49,6 +49,8 @@ async def recall_memories_templated(
         user_id=user_id,
         bot_id=bot_id
     )
+    for memory in memories:
+        print(memory)
     template = list()
     for document, _ in memories:
         query = document['query']
@@ -63,12 +65,14 @@ async def memorize_conversation(
         answer: str,
         user_id: str = DEFAULT_USER_ID,
         bot_id: str = DEFAULT_BOT_ID,
+        query_weight: int = 1,
+        answer_weight: int = 1,
         cached: bool = False
 ) -> bool:
     answer = re.sub(pattern=r'\n+', repl='\n', string=answer)
     query_vector = text_encode(query)
     answer_vector = text_encode(answer)
-    vector = (query_vector + answer_vector) / 2.0
+    vector = query_weight * query_vector + answer_weight * answer_vector
     mem_data = {
         'query': query,
         'answer': answer,

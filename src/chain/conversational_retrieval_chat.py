@@ -41,7 +41,7 @@ async def memo_chat(
 
 
 @sync
-async def shell_run():
+async def shell_run(query_weight: int, answer_weight: int):
     while True:
         _query = input('> ')
         answer: str = ''
@@ -60,9 +60,11 @@ async def shell_run():
         await memorize_conversation(
             query=_query,
             answer=answer,
-            cached=True
+            cached=True,
+            query_weight=query_weight,
+            answer_weight=answer_weight
         )
 
 
 if __name__ == '__main__':
-    shell_run()
+    shell_run(2, 1)

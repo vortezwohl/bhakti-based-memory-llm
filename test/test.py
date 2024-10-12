@@ -1,4 +1,4 @@
 from src.chain.conversational_retrieval_chat import shell_run
 
 if __name__ == '__main__':
-    shell_run()
+    shell_run(2, 1)
