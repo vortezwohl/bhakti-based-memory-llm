@@ -2,10 +2,10 @@ import time
 
 from langchain_core.output_parsers import StrOutputParser
 
-from src.model.lm.qwen_plus import qwen_plus
+from src.model.lm.gpt_3dot5_turbo import gpt_3dot5_turbo
 
 
-chain = qwen_plus | StrOutputParser()
+chain = gpt_3dot5_turbo | StrOutputParser()
 
 
 def naive_chat(query: str, stream: bool = False):
