@@ -7,6 +7,7 @@ from numpy import ndarray, asarray
 
 from src.model.embedding.m3e_small import m3e_small
 from src.bhakti_client import bhakti_client
+from src.logger import logger
 
 DEFAULT_USER_ID = 'None'
 DEFAULT_BOT_ID = 'None'
@@ -49,8 +50,9 @@ async def recall_memories_templated(
         user_id=user_id,
         bot_id=bot_id
     )
-    for memory in memories:
-        print(memory)
+    logger.debug(f'Recalls: {len(memories)}')
+    for i, memory in enumerate(memories):
+        logger.debug(f'{i}: {memory}')
     template = list()
     for document, _ in memories:
         query = document['query']
