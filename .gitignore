@@ -163,4 +163,5 @@ cython_debug/
 zen
 *.inv
 *.vec
+*.dim
 cache

@@ -5,7 +5,7 @@ from bhakti.database import Metric
 from bhakti.util import sync
 
 from src.prompt.default_prompt import default_prompt
-from src.model.lm.qwen_plus import qwen_plus
+from src.model.lm.gpt_3dot5_turbo import gpt_3dot5_turbo
 from src.model.util import (
     memorize_conversation,
     recall_memories_templated,
@@ -13,7 +13,7 @@ from src.model.util import (
     DEFAULT_USER_ID
 )
 
-chain = default_prompt | qwen_plus | StrOutputParser()
+chain = default_prompt | gpt_3dot5_turbo | StrOutputParser()
 
 
 async def memo_chat(
