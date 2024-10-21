@@ -3,15 +3,19 @@ import time
 from langchain_core.output_parsers import StrOutputParser
 
 from src.model.lm.gpt_3dot5_turbo import gpt_3dot5_turbo
+from src.prompt.default_prompt import default_prompt
 
-
-chain = gpt_3dot5_turbo | StrOutputParser()
+chain = default_prompt | gpt_3dot5_turbo | StrOutputParser()
 
 
 def naive_chat(query: str, stream: bool = False):
+    prompt_template = {
+        'memory': '',
+        'query': query
+    }
     if stream:
-        return chain.stream(query)
-    return chain.invoke(query)
+        return chain.stream(prompt_template)
+    return chain.invoke(prompt_template)
 
 
 def shell_run():
